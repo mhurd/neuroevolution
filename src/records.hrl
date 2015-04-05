@@ -8,7 +8,29 @@
 %%%-------------------------------------------------------------------
 -author("mhurd").
 
--record(sensor, {id, cortex_id, name, vector_length, fanout_ids}).
--record(actuator, {id, cortex_id, name, vector_length, fanin_ids}).
--record(neuron, {id, cortex_id, activation_function, input_idps, output_ids}).
--record(cortex, {id, sensor_ids, actuator_ids, neuron_ids}).
+-record(sensor, {
+  id, % unique id of the form {sensor, UniqueVal}
+  cortex_id, % the id of the Cortex element
+  name, % name of the function to execute to get the sensory data
+  vector_length, % the length of the resulting sensory data vector
+  fanout_ids}). % list of Neuron ids the sensor data will fan out to
+
+-record(actuator, {
+  id, % unique id of the form {actuator, UniqueVal}
+  cortex_id, % the id of the Cortex element
+  name, % name of the function to execute to get the sensory data
+  vector_length, % the length of the resulting sensory data vector
+  fanin_ids}). % list of Neuron ids connected to the Actuator
+
+-record(neuron, {
+  id, % unique id of the form {neuron, {LayerIndex, UniqueVal}}
+  cortex_id, % the id of the Cortex element
+  activation_function, % the name of the function to apply to the dot product of the input/weight (+bias) vectors
+  inputs, % Inputs, tuples of form [{Id1, Weights1} ... {IdN, WeightsN}, {bias, Val}]
+  output_ids}). % list of Ids to fanout the output to
+
+-record(cortex, {
+  id, % unique id of the form {cortex, UniqueVal}
+  sensor_ids, % list of Sensors that produce the sensory inputs to the input layer neurons
+  actuator_ids, % list of Actuators that the neural output layer is connected to
+  neuron_ids}). % list of all the Neurons in the network
